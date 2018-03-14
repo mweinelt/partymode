@@ -1,12 +1,34 @@
 #!/usr/bin/env python3
 
-import paho.mqtt.client as mqtt
+import os
 from subprocess import run
 
+import paho.mqtt.client as mqtt
+import pyotp
+from qrcode import QRCode
+
+partymode_totp_secret = None
+if os.path.exists('./secret'):
+    # use existing secret
+    with open('./secret') as handle:
+        partymode_totp_secret = handle.read()
+else:
+    # generate new secret
+    partymode_totp_secret = pyotp.random_base32()
+    with open('./secret', 'w') as handle:
+        handle.write(partymode_totp_secret)
+
+partymode_totp = pyotp.TOTP(partymode_totp_secret)
 partymode_enabled = False
 topic_bell = "w17/door/bell/state"
 topic_party_set = "w17/door/partymode/enabled/set"
 topic_party_state = "w17/door/partymode/enabled"
+
+# print provisioning qrcode to terminal
+print("QRCode, usable with TOTP Application:")
+qr = QRCode()
+qr.add_data(partymode_totp.provisioning_uri('account', 'service'))
+qr.print_tty()
 
 #connection with mqtt, to receive the bellstate
 def on_connect(client, userdata, flags, rc):
@@ -21,7 +43,7 @@ def on_message(client, userdata, msg):
     topic = msg.topic
     #print(topic, payload)
     if topic == topic_party_set:
-        partymode_enabled = payload == "1"
+        partymode_enabled = payload == partymode_tot.now()
         if partymode_enabled:
             print("Let's get ready to rumble!")
             client.publish(topic_party_state, payload=1)

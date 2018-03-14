@@ -8,6 +8,8 @@ name = "pypi"
 [packages]
 
 paho-mqtt = "*"
+pyotp = "*"
+qrcode = "*"
 
 
 [dev-packages]
