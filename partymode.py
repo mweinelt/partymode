@@ -27,7 +27,7 @@ topic_party_state = "w17/door/partymode/enabled"
 # print provisioning qrcode to terminal
 print("QRCode, usable with TOTP Application:")
 qr = QRCode()
-qr.add_data(partymode_totp.provisioning_uri('account', 'service'))
+qr.add_data(partymode_totp.provisioning_uri('enable key', 'w17/door/partymode'))
 qr.print_tty()
 
 #connection with mqtt, to receive the bellstate
