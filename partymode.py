@@ -43,7 +43,7 @@ def on_message(client, userdata, msg):
     topic = msg.topic
     #print(topic, payload)
     if topic == topic_party_set:
-        partymode_enabled = payload == partymode_tot.now()
+        partymode_enabled = payload == partymode_totp.now()
         if partymode_enabled:
             print("Let's get ready to rumble!")
             client.publish(topic_party_state, payload=1)
