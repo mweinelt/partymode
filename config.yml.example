@@ -1,0 +1,7 @@
+
+topic_bell: "w17/door/bell/state"
+topic_party_set: "w17/door/partymode/enabled/set"
+topic_party_state: "w17/door/partymode/enabled"
+topic_door_lock_state: "w17/door/lock/state"
+mqtt_host: "mqtt.w17.io"
+mqtt_port: 1883

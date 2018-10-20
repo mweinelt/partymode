@@ -8,6 +8,8 @@ from datetime import date
 import paho.mqtt.client as mqtt
 import pyotp
 from qrcode import QRCode
+import yaml
+import sys
 
 partymode_totp_secret = None
 if os.path.exists('./secret'):
@@ -20,13 +22,20 @@ else:
     with open('./secret', 'w') as handle:
         handle.write(partymode_totp_secret)
 
+try:
+    with open("config.yml.example") as handle:
+        config = yaml.load(handle)
+except FileNotFoundError:
+    print("cannot find config.yml.example, please copy and modify config.yml.example", file=sys.stderr)
+    sys.exit(1)
+
 partymode_totp = pyotp.TOTP(partymode_totp_secret)
 partymode_enabled = False
 partymode_enabled_date = None
-topic_bell = "w17/door/bell/state"
-topic_party_set = "w17/door/partymode/enabled/set"
-topic_party_state = "w17/door/partymode/enabled"
-topic_door_lock_state = "w17/door/lock/state"
+topic_bell = config["topic_bell"]
+topic_party_set = config["topic_party_set"]
+topic_party_state = config["topic_party_state"]
+topic_door_lock_state = config["topic_door_lock_state"]
 
 # print provisioning qrcode to terminal
 print("QRCode, usable with TOTP Application:")
@@ -101,6 +110,6 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.connect("mqtt.w17.io", 1883)
+client.connect(config["mqtt_host"], config["mqtt_port"])
 
 client.loop_forever()

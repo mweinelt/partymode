@@ -10,7 +10,7 @@ name = "pypi"
 paho-mqtt = "*"
 pyotp = "*"
 qrcode = "*"
-
+pyyaml = "*"
 
 [dev-packages]
 
