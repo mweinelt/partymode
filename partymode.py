@@ -37,6 +37,7 @@ qr.print_tty()
 # connection with mqtt broker, subscribe to updates for several states
 def on_connect(client, userdata, flags, rc):
     print("Verbunden mit mqtt.")
+    client.publish(topic_party_state, payload=1 if partymode_enabled else 0)
     client.subscribe([
         (topic_bell, 0),  # Does the bell ring?
         (topic_party_set, 0),  # Does somebody try to en/disable the partymode?
