@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import base64
 from subprocess import run
 from datetime import date
 
@@ -15,7 +14,7 @@ partymode_totp_secret = None
 if os.path.exists('./secret'):
     # use existing secret
     with open('./secret', encoding='UTF-8') as handle:
-        partymode_totp_secret = base64.b32decode(bytes(handle.read(), 'utf-8'), casefold=True)
+        partymode_totp_secret = handle.read()
 else:
     # generate new secret
     partymode_totp_secret = pyotp.random_base32()
