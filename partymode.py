@@ -22,10 +22,10 @@ else:
         handle.write(partymode_totp_secret)
 
 try:
-    with open("config.yml.example") as handle:
+    with open("config.yml") as handle:
         config = yaml.load(handle)
 except FileNotFoundError:
-    print("cannot find config.yml.example, please copy and modify config.yml.example", file=sys.stderr)
+    print("cannot find config.yml, please copy and modify config.yml.example", file=sys.stderr)
     sys.exit(1)
 
 partymode_totp = pyotp.TOTP(partymode_totp_secret)
